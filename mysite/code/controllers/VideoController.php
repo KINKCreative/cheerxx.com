@@ -9,7 +9,8 @@ class VideoController extends Page_Controller implements PermissionProvider {
 		'index',
 		'upload',
 		'view',
-		'ScoringForm'
+		'ScoringForm',
+		'CoachingForm'
 	);
 	
 	public static $url_handlers = array(
@@ -26,6 +27,7 @@ class VideoController extends Page_Controller implements PermissionProvider {
 	public function providePermissions() {
 	    return array(
 	      "SCORE_SUBMISSIONS" => "User can score submissions",
+	      "MANAGE_COACHING" => "User can respond to onlinecoaching"
 	    );
 	  }
 	
@@ -45,7 +47,8 @@ class VideoController extends Page_Controller implements PermissionProvider {
 	public function view() {
 		
 		if($Item = $this->getCurrentItem()) {
-			return array(
+
+			$data = array(
 				'Title' => $Item->Title,
 				'Content' => $Item->Content,
 				'MetaTitle' => $Item->Title,
@@ -53,6 +56,20 @@ class VideoController extends Page_Controller implements PermissionProvider {
 				'Link' =>$Item->Link(),
 				'ClassName' => 'Video'
 			);
+
+			if($Item->ClassName == "CoachingCategorySubmission") {
+				if($Item->MemberID == Member::currentUserID() || Permission::check("MANAGE_COACHING")) {
+					return $this->customise($data)->renderWith(array("VideoController_Coaching","Page"));
+				}
+				else {
+					$this->setMessage("danger","You do not have permissions to view this video.");
+					$this->redirectBack();
+				}
+			}
+			else {
+				return $this->customise($data);
+			}
+
 		}
 	    else {
 			return $this->httpError(404, _t("VIDEONOTFOUND","Video not found."));
@@ -190,5 +207,14 @@ class VideoController extends Page_Controller implements PermissionProvider {
 	
 	public function ScoreBox() {
 		return $this->renderWith("ScoreBox");
+	}
+
+	public function CoachingForm() {
+		$video = $this->getSubmissionTarget();
+		if($video && $video->ClassName=="CoachingCategorySubmission") {
+			$gridField = new GridField('pages', 'CoachingForm', $video->Entries(), GridFieldConfig_RecordEditor::create()); 
+        	return new Form($this, "CoachingForm", new FieldList($gridField), new FieldList());
+		}
+
 	}
 }
