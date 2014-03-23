@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/271/trunk/api/php/trunk/tests
+END
+uploadvideoredirect.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/228/trunk/api/php/trunk/tests/uploadvideoredirect.php
+END
+uploadvideo.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/271/trunk/api/php/trunk/tests/uploadvideo.php
+END
+uploadFile.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/271/trunk/api/php/trunk/tests/uploadFile.php
+END
+api_account-details.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/41/trunk/api/php/trunk/tests/api_account-details.php
+END
+api_videos-list.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/79/trunk/api/php/trunk/tests/api_videos-list.php
+END
+xml2array.php
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/71/trunk/api/php/trunk/tests/xml2array.php
+END
+deletevideo.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/41/trunk/api/php/trunk/tests/deletevideo.php
+END
+editvideo.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/228/trunk/api/php/trunk/tests/editvideo.php
+END
+getUserDetails.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/228/trunk/api/php/trunk/tests/getUserDetails.php
+END
+escaping.html
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/140/trunk/api/php/trunk/tests/escaping.html
+END
+video.flv
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/228/trunk/api/php/trunk/tests/video.flv
+END
+api_user-details.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/41/trunk/api/php/trunk/tests/api_user-details.php
+END
+uploadvideoprocess.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/228/trunk/api/php/trunk/tests/uploadvideoprocess.php
+END
+testOAuth.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/243/trunk/api/php/trunk/tests/testOAuth.php
+END

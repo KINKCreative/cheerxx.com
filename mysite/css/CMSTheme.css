@@ -1,0 +1,113 @@
+/* @override 
+	http://localhost/gas/mysite/css/CMSTheme.css?m=1377127640
+	http://localhost/gas/mysite/css/CMSTheme.css?m=1377129756
+	http://localhost/gas/mysite/css/CMSTheme.css?m=1377130506
+	http://localhost/gas/mysite/css/CMSTheme.css?m=1377130969
+	http://localhost/gas/mysite/css/CMSTheme.css?m=1378204861 */
+.LeftAndMain {
+	background: #888888;
+}
+
+#top {
+	background: #333;
+}
+
+#Logo a {
+	background: none !important;
+	padding: 0 !important;
+}
+
+#top #MainMenu li.current {
+	background: #888888;
+}
+
+#treepanes h2 {
+	background: #333;
+	border: none;
+	border-bottom: 1px solid #555;
+}
+
+#right {
+	background: #666;
+	border: none;
+}
+
+fieldset ul.tabstrip li a {
+	background: none !important;
+}
+
+fieldset ul.tabstrip li, fieldset ul.tabstrip li a, fieldset ul.tabstrip li {
+	background: #AAA;
+	color: #111;
+}
+
+fieldset ul.tabstrip li.current a {
+	color: #555;
+}
+
+fieldset ul.tabstrip li a:hover, fieldset ul.tabstrip li:hover {
+	background: #CCC;
+	color: #FFF;
+}
+ul.tabstrip li.current:hover, fieldset ul.tabstrip li.current a:hover {
+	color: #333;
+}
+
+fieldset > .tab {
+	background: #FFFFFF !important;
+}
+
+fieldset .tab .tab.current {
+	background: #FFFFFF !important;
+}
+
+fieldset > ul.tabstrip li.current, fieldset > ul.tabstrip li.current a {
+	background: #FFFFFF !important;
+}
+fieldset .tab ul.tabstrip li.current, fieldset .tab ul.tabstrip li.current a {
+	background: #FFFFFF !important;
+}
+
+.tabstrip {
+	border: none !important;
+}
+
+#right fieldset .tab {
+	border: none !important;
+}
+.field .middleColumn {
+	background: #F5F5F5 !important;
+}
+
+.field .middleColumn input {
+	color: #888 !important;
+	outline: none !important;
+}
+
+.field .middleColumn input:focus {
+
+	-moz-box-shadow:	0 0 8px #999999 !important;
+	-webkit-box-shadow: 0 0 8px #999999 !important;
+	box-shadow:         0 0 8px #999999 !important;
+}
+
+#left {
+	border: 1px solid #444;
+}
+
+ul#sitetree li span.current {
+	background: #EFEFEF !important;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+#bottom {
+	background: #333;
+	border-top: 1px solid #222;
+}
+
+.checkboxsetfield li {
+	display: inline-block;
+	margin: 5px 8px !important;
+	white-space: nowrap;
+}

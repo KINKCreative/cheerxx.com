@@ -1,0 +1,69 @@
+K 26
+svn:wc:ra_dav:activity-url
+V 14
+/svn/!svn/act/
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/263/trunk/api/php/trunk/tests/SWFUpload
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/256/trunk/api/php/trunk/tests/SWFUpload/readme.txt
+END
+swfupload.queue.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/255/trunk/api/php/trunk/tests/SWFUpload/swfupload.queue.js
+END
+swfupload.js
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/255/trunk/api/php/trunk/tests/SWFUpload/swfupload.js
+END
+default.css
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/257/trunk/api/php/trunk/tests/SWFUpload/default.css
+END
+processVideo.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/261/trunk/api/php/trunk/tests/SWFUpload/processVideo.php
+END
+swfupload.swf
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/113/trunk/api/php/trunk/tests/SWFUpload/swfupload.swf
+END
+uploaded.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/113/trunk/api/php/trunk/tests/SWFUpload/uploaded.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/275/trunk/api/php/trunk/tests/SWFUpload/index.php
+END
+fileprogress.js
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/255/trunk/api/php/trunk/tests/SWFUpload/fileprogress.js
+END
+handlers.js
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/255/trunk/api/php/trunk/tests/SWFUpload/handlers.js
+END

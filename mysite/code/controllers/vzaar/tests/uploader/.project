@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>VzaarUploader</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] oauth-as3-src</name>
+			<type>2</type>
+			<location>D:/FTP/Projects - AS3/_CodeLibs/oauth-as3/src</location>
+		</link>
+		<link>
+			<name>[source path] AsWing-src</name>
+			<type>2</type>
+			<location>D:/FTP/Projects - AS3/_CodeLibs/aswing/Aswing/AsWing/src</location>
+		</link>
+	</linkedResources>
+</projectDescription>
