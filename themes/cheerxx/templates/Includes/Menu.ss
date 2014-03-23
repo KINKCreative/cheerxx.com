@@ -13,7 +13,8 @@
 	<% if CurrentMember %>
 		<dt>Hello, <strong>$CurrentMember.Name</strong></dt>	
 		<dd><a href="upload" class="button round alert"><i class="icon-upload-cloud"></i> Upload video</a></dd>
-		<dd><a href="register"><i class="icon-user"></i>Your profile</a></dd>
+		<dd><a href="register"><i class="icon-lock-open-alt"></i>Account</a></dd>
+		<dd><a href="recruiting/editprofile"><i class="icon-user"></i>Profile</a></dd>
 		<dd><a href="Security/logout"><i class="icon-off"></i>Logout</a></dd>
 	<% else %>
 		<dd><a href="register">Sign up</a></dd>

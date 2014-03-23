@@ -5,9 +5,9 @@
 		</div>
 		<div class="large-4 columns">
 			<% if CanEditProfile %>
-				<a href="{$Link}editprofile" class="button secondary radius" title="Edit profile"><strong>Edit your profile</strong> <i class="icon-angle-circled-right"></i></a>
+				<a href="{$Link}editprofile" class="button primary radius" title="Edit profile"><strong>Edit your profile</strong> - click here <i class="icon-angle-circled-right"></i></a>
 			<% else %>
-				<a href="{$Link}register" class="button primary radius nomargin" title="Register now"><strong>Register now</strong> - click here <i class="icon-angle-circled-right"></i></a>
+				<a href="{$Link}editprofile" class="button primary radius" title="Create a profile now"><strong>Create your profile</strong> - click here <i class="icon-angle-circled-right"></i></a>
 			<% end_if %>
 		</div>
 	</div>

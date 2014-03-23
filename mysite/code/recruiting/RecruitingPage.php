@@ -20,11 +20,11 @@ class RecruitingPage_Controller extends Page_Controller {
 
 	private static $allowed_actions = array (
 		'profile',
-		'register',
+		// 'register',
 		'index',
 		'editprofile',
 		'ProfileEditForm',
-		'RegisterForm',
+		// 'RegisterForm',
 		'recruitingwebhook'
 	);	
 
@@ -44,25 +44,25 @@ class RecruitingPage_Controller extends Page_Controller {
 //		return Controller::join_links(self::URLSegment, $action, $id);
 //	} 
 	
-	public function register() {
-		if(!Member::currentUserID()) {
-			$this->setMessage("error","You need to be logged in to register.");
-			Session::set('BackURL',"recruiting/register");
-			$this->redirect("Security/login");
-		}
-		if($profile = $this->getCurrentMemberProfile()) {
-			if($profile->getHasActiveSubscription()) {
-				$this->setMessage("warning","Your subscription is still active.");
-				$this->redirectBack();
-				return false;
-			}
-		}
-		return array(
-			"Title" => "Recruiting database sign-up",
-			"Form" => $this->RegisterForm(),
-			"StripePublishableKey" => STRIPE_PUBLISHABLE_KEY
-		);
-	}
+	// public function register() {
+	// 	if(!Member::currentUserID()) {
+	// 		$this->setMessage("error","You need to be logged in to register.");
+	// 		Session::set('BackURL',"recruiting/register");
+	// 		$this->redirect("Security/login");
+	// 	}
+	// 	if($profile = $this->getCurrentMemberProfile()) {
+	// 		if($profile->getHasActiveSubscription()) {
+	// 			$this->setMessage("warning","Your subscription is still active.");
+	// 			$this->redirectBack();
+	// 			return false;
+	// 		}
+	// 	}
+	// 	return array(
+	// 		"Title" => "Recruiting database sign-up",
+	// 		"Form" => $this->RegisterForm(),
+	// 		"StripePublishableKey" => STRIPE_PUBLISHABLE_KEY
+	// 	);
+	// }
 	
 	public function profile() {	
 		if($Item = $this->getCurrentProfile()) {
@@ -90,15 +90,24 @@ class RecruitingPage_Controller extends Page_Controller {
 		}
 		
 		if($profile = $this->getCurrentMemberProfile()) {
-			if(!$profile->getHasActiveSubscription()) {
-				$this->setMessage("warning","Your subscription is not active anymore. Please renew.");
-				$this->redirect("recruiting/register");
-				return false;
-			}
+			// if(!$profile->getHasActiveSubscription()) {
+			// 	$this->setMessage("warning","Your subscription is not active anymore. Please renew.");
+			// 	$this->redirect("recruiting/register");
+			// 	return false;
+			// }
 		}
 		else {
-			$this->setMessage("warning","You haven't made your profile yet.");
-			$this->redirect("recruiting/register");
+
+			$member = Member::currentUser();
+
+			$profile = new RecruitingProfile();
+			$profile->FirstName = $member->FirstName;
+			$profile->LastName = $member->Surname;
+			$profile->MemberID = $member->ID;
+			$profile->write();
+			$profile->SubscriptionDate = date("Y-m-d H:i:s");
+			$profile->write();
+
 		}
 		return array(
 			'Title' => "Edit your profile",
@@ -124,12 +133,13 @@ class RecruitingPage_Controller extends Page_Controller {
 	public function CanEditProfile() {
 		$profile = $this->getCurrentProfile();
 		if($profile) {
-			return $profile->getHasActiveSubscription();
+			return  true; //$profile->getHasActiveSubscription();
 		}
 		return false;
 	}
 	
 	
+	/* 
 	public function RegisterForm() {
 		if($profile = $this->getCurrentMemberProfile()) {
 			return false;
@@ -193,7 +203,7 @@ class RecruitingPage_Controller extends Page_Controller {
 						
 	    return new Form($this, 'RegisterForm', $fields, $actions);
 		
-	}
+	} */
 	
 	function getCurrentMemberProfile() {
 		$uid = Member::currentUserID();
@@ -208,7 +218,7 @@ class RecruitingPage_Controller extends Page_Controller {
 		return false;
 	}
 	
-	function doRegister($data, $form) {
+/*	function doRegister($data, $form) {
 			
 		$price = 5;
 		if($this->Price) { $price = $this->Price; }
@@ -237,7 +247,7 @@ class RecruitingPage_Controller extends Page_Controller {
 			$profile->write();
 			
 			
-			/* SEND EMAIL */
+			// SEND EMAIL
 			$from = "noreply@cheerxx.com";
 			$to = $member->Email;
 			$subject = "Registration cofirmed for Recruiting Dabase";
@@ -260,7 +270,7 @@ class RecruitingPage_Controller extends Page_Controller {
 		}
 					
 		$this->redirectBack();
-	}
+	} */
 	
 	function ProfileEditForm() {
 		$profile = $this->getCurrentMemberProfile();
@@ -318,7 +328,7 @@ class ProfileEditForm extends Form {
     	$em = new TextField("Email","E-mail", $member->Email);
     	$em->performReadonlyTransformation(true);
     
-//    	global $state_list;
+   		global $state_list;
     	print_r($state_list);
     	
     	$fields = new FieldList(
@@ -349,11 +359,11 @@ class ProfileEditForm extends Form {
     		),
     		new Tab("YourSkills",
     			new HeaderField("Skillsheader", "Skill categories",4)
-    		),
+    		) /* ,
 	    	new Tab("Subscription",
 	    		new ReadonlyField("Renewed", "Subscription renewed", $nicedate2),
 	    		new ReadonlyField("Valid", "Subscription valid until", $nicedate)
-	    	)
+	    	) */
     	));
     
     	$groupedSkillList = new GroupedList(Skill::get()); 
