@@ -5,7 +5,9 @@
 		<div class="large-12 columns">
 	
 			<article>
-				<div class="content">$Content</div>
+				<div class="content">$Content
+					$CustomHtml.RAW
+				</div>
 				<% if Form %>
 				<div class="large-8 large-centered columns">
 					$Form

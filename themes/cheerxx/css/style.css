@@ -502,6 +502,11 @@ table .unscored td {
 	background: #f5e2e2 !important;
 }
 
+.camp-info .vcard {
+	margin: 0.5em auto !important;
+	background:#FFFFFF !important;
+}
+
 @media only screen and (min-width: 768px) {
 	ul.mainmenu {
 		margin: 2em 0 1em 0;
