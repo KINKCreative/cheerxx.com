@@ -158,7 +158,8 @@ class UploadController extends Page_Controller {
 	    	HeaderField::create("Info","Video information",3),
 	    	LiteralField::create("VideoTitle","<p>You are submitting for ".$title."</p>"),
 	    	LiteralField::create('firstrow','<div class="row"><div class="large-12 columns">'),
-			TextareaField::create('description', $descriptionText)->setAttribute("required pattern","[a-zA-Z]+"), //
+	    	TextField::create('Title',"Enter video title"),
+			TextareaField::create('description', $descriptionText)->setAttribute("required pattern","[a-zA-Z]+"),
 			LiteralField::create('row2','</div></div><div class="row"><div class="large-12 columns">'),
 			LiteralField::create('FileUpload','<label for="file">Select a Video to Upload (max. 50Mb)</label>'.
 				'<input type="file" name="file" id="file" required accept="video/*" />'.
@@ -245,15 +246,16 @@ class UploadController extends Page_Controller {
 			
 			
 			}
-			/*
+			
 			
 			// PROCESS VIDEO
 			$apireply = Vzaar::processVideo($guid, "", "", "", 1);
 			
 			// SAVE SUBMISSION INTO DATABASE
-			print_r($apireply);
+			// print_r($apireply);
 			
 			$submission = new $submissionClass();
+			$submission->Title = isset($data["Title"]) ? $data["Title"] : "New video";
 			$submission->TargetID = $sid;
 			$submission->VzaarID = $apireply;
 			$submission->description = $description;
@@ -261,8 +263,8 @@ class UploadController extends Page_Controller {
 			
 			// UPDATE VIDEO DETAILS
 		
-			$title = "**competition_name** - submission for **challenge_name** by $username";
-			$vzaarDescription = 'Submission for '.$submission->Title;
+			$title = $data["Title"]; // **competition_name** - submission for **challenge_name** by $username";
+			$vzaarDescription = 'Submission for '.$submission->Title. " by ".$username;
 			$vzaarDescription = '-- View more videos on www.CheerXX.com';
 			$submissionURL = $submission->absoluteLink();
 			
@@ -274,7 +276,7 @@ class UploadController extends Page_Controller {
 			
 			$status = $apireply."<br/>";
 			$this->setMessage("success", $status);
-		    //Director::redirectBack(); */
+		    //Director::redirectBack(); 
 		} catch (Exception $e) {
 		    $this->setMessage("alert", $e->getMessage());
 		}

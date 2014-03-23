@@ -302,6 +302,7 @@ fieldset {
 .vzaar-video-player {
 	padding: 0 !important;
 	margin: 0;
+	border: none !important;
 }
 .button.nopadding {
 	padding: 0.4em 0.5em;

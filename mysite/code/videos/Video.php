@@ -18,7 +18,7 @@ class Video extends DataObject {
 		'FramegrabURL' => 'Varchar(255)',
 		'LikeTotal' => 'Int',
 		'FavoriteTotal' => 'Int',
-		'Status' => 'Enum(array("New","Pending","Published"))'
+		'Status' => 'Enum(array("New","Pending","Published","Blocked"))'
 	);
 	
 	private static $indexes = array(
@@ -37,7 +37,8 @@ class Video extends DataObject {
    );
 	
 	private static $defaults = array(
-		'Status' => 'New'
+		'Status' => 'New',
+		'Title' => "New video"
 	);
 	
 	private static $summary_fields = array(
@@ -75,6 +76,9 @@ class Video extends DataObject {
 		if(!$this->URLSegment) {
 			$this->URLSegment = $this->generateURL();
 			$this->write();
+		}
+		if($this->Title=="New video") {
+			$this->Title = "Video #".$this->ID;
 		}
 		parent::onAfterWrite();
 	}
