@@ -272,6 +272,10 @@ class UploadController extends Page_Controller {
 			
 			Vzaar:editVideo($submussion->VzaarID, $title, $description, false, $submissionURL);
 			
+			//UPDATE SUBMISSION STATUS
+			$submission->Status = "Published";
+			$submission->write();
+
 			// SEND EMAIL HERE
 			
 			$status = $apireply."<br/>";
