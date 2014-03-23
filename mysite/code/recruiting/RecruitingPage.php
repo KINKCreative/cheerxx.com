@@ -131,7 +131,7 @@ class RecruitingPage_Controller extends Page_Controller {
 	}
 	
 	public function CanEditProfile() {
-		$profile = $this->getCurrentProfile();
+		$profile = $this->getCurrentMemberProfile();
 		if($profile) {
 			return  true; //$profile->getHasActiveSubscription();
 		}
@@ -212,8 +212,6 @@ class RecruitingPage_Controller extends Page_Controller {
 			if($profile) {
 				return $profile;
 			}
-		}
-		else {
 		}
 		return false;
 	}
