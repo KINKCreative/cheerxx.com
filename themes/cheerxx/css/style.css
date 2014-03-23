@@ -88,10 +88,6 @@ body {
 img.logo-norm {
 	margin: 0.8em 0;
 	max-height: 6em !important;
-	filter: drop-shadow(2px 2px 15px rgba(0,0,0,0.3));
-	-webkit-filter: drop-shadow(2px 2px 15px rgba(0,0,0,0.3));
-    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
-    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
 }
 img.logo {
 	max-height: 50px !important;
