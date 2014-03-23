@@ -28,6 +28,11 @@ class HomePage_Controller extends Page_Controller {
 	private static $allowed_actions = array ();
 
 	public function init() {
+		$m = Member::currentUser();
+		if($m && !Session::get("new")) {
+			$this->setMessage("success","Welcome back, <strong>".$m->getName()."</strong>.");
+			Session::set("new",true);
+		}
 		parent::init();
 	}
 	
