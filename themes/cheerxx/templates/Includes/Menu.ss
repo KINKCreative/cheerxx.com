@@ -11,7 +11,7 @@
 
 <dl class="sub-nav hide-for-small">
 	<% if CurrentMember %>
-		<dt>Hello, <strong>$CurrentMember.Name</strong></dt>	
+		<!-- <dt>Hello, <strong>$CurrentMember.Name</strong></dt> -->
 		<dd><a href="upload" class="button round alert"><i class="icon-upload-cloud"></i> Upload video</a></dd>
 		<dd><a href="register"><i class="icon-lock-open-alt"></i>Account</a></dd>
 		<dd><a href="recruiting/editprofile"><i class="icon-user"></i>Profile</a></dd>
