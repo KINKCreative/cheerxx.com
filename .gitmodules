@@ -1,0 +1,3 @@
+[submodule "plugins/chosen"]
+	path = plugins/chosen
+	url = https://github.com/harvesthq/chosen

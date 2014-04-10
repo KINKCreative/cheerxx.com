@@ -506,6 +506,38 @@ table .unscored td {
 	margin: 0.5em auto !important;
 	background:#FFFFFF !important;
 }
+#Root.ss-tabset {
+	padding: 0;
+}
+.ui-widget-header {
+	background: #222 !important;
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: 1px solid #CCC !important;
+	border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	-webkit-border-radius: 0 !important;
+	padding: 0.5em 0.5em 0 1em !important;
+}
+.search-choice {
+	background: #00aeef !important;
+	color: #FFF !important;	
+	padding: 0.5em 1.3em 0.5em 0.5em !important;
+	font-weight: bold;
+}
+.search-choice-close {
+	top: 10px !important;	
+}
+.chosen-container, .chosen-choices, .search-field input.default {
+	min-height: 2em !important;
+}
+.chosen-choices, .chosen-drop {
+	background: #EFEFEF !important;
+}
+.chosen-container {
+	margin-bottom: 1em !important;
+}
 
 @media only screen and (min-width: 768px) {
 	ul.mainmenu {

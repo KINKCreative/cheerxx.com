@@ -89,26 +89,18 @@ class RecruitingPage_Controller extends Page_Controller {
 			$this->redirect("Security/login");
 		}
 		
-		if($profile = $this->getCurrentMemberProfile()) {
+//		if($profile = $this->getCurrentMemberProfile()) {
 			// if(!$profile->getHasActiveSubscription()) {
 			// 	$this->setMessage("warning","Your subscription is not active anymore. Please renew.");
 			// 	$this->redirect("recruiting/register");
 			// 	return false;
 			// }
-		}
-		else {
-
-			$member = Member::currentUser();
-
-			$profile = new RecruitingProfile();
-			$profile->FirstName = $member->FirstName;
-			$profile->LastName = $member->Surname;
-			$profile->MemberID = $member->ID;
-			$profile->write();
-			$profile->SubscriptionDate = date("Y-m-d H:i:s");
-			$profile->write();
-
-		}
+//		}
+//		else {
+//
+//			$member = Member::currentUser();
+//
+//		}
 		return array(
 			'Title' => "Edit your profile",
 //				'Content' => $Item->Content,
@@ -272,16 +264,28 @@ class RecruitingPage_Controller extends Page_Controller {
 	
 	function ProfileEditForm() {
 		$profile = $this->getCurrentMemberProfile();
-		if($profile) {
-			$form = new ProfileEditForm($this,"ProfileEditForm",$profile);
-			return $form;
+		$member = Member::currentUser();
+		
+		if(!$member) {
+			return false;
 		}
-		return false;
+		
+		if ($member && !$profile) {
+			$profile = new RecruitingProfile();
+			$profile->FirstName = $member->FirstName;
+			$profile->LastName = $member->Surname;
+			$profile->MemberID = $member->ID;
+			$profile->write();
+			$profile->SubscriptionDate = date("Y-m-d H:i:s");
+			$profile->write();
+		}
+		$form = new ProfileEditForm($this,"ProfileEditForm",$profile);
+		return $form;
 	}
 	
-	public function ExtraJavascript() {
+	/* public function ExtraJavascript() {
 		return $this->renderWith("Javascript_Recruiting");
-	}	    
+	}	*/    
 	
 }
 
@@ -293,12 +297,20 @@ class ProfileEditForm extends Form {
  
     public function __construct($controller, $name, $profile) {
     
-    	if(!$profile) {
-    		$profile = new RecruitingProfile();
-    	};
-    	
     	$member = Member::currentUser();
-    	
+    	if(!$member || !$profile ) {
+    		return false;
+    	}
+    	    	
+		$fn = new TextField("FirstName","First name", $profile->FirstName);
+		$fn->performReadonlyTransformation(true);
+		
+		$ln = new TextField("LastName","Last name", $profile->LastName);
+		$ln->performReadonlyTransformation(true);
+		
+		$em = new TextField("Email","E-mail", $member->Email);
+		$em->performReadonlyTransformation(true);
+	
     	$sizeMB = 5; // 50 MB
 		$size = $sizeMB * 1024 * 1024; // 2 MB in bytes
 		$uploadField = new UploadField("Images","Upload image (max. ".$sizeMB." Mb)");
@@ -316,70 +328,71 @@ class ProfileEditForm extends Form {
     	$nicedate2 = $date->format('Y-m-d h:m');
     	$date->modify('+1 year');
     	$nicedate = $date->format('Y-m-d h:m');
-    	
-    	$fn = new TextField("FirstName","First name", $profile->FirstName);
-    	$fn->performReadonlyTransformation(true);
-    	
-    	$ln = new TextField("LastName","Last name", $profile->LastName);
-    	$ln->performReadonlyTransformation(true);
-    	
-    	$em = new TextField("Email","E-mail", $member->Email);
-    	$em->performReadonlyTransformation(true);
+    	   
     
    		global $state_list;
-    	print_r($state_list);
-    	
-    	$fields = new FieldList(
-    	new TabSet(
-    		"Root",
-    		new Tab("Main",
-    			$fn,$ln,$em,
- 				new DropdownField(
- 				  'Gender',
- 				  'Gender',
- 				  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
- 				  $profile->Gender
- 				),
-    			new TextField("Hometown","Hometown",$profile->Hometown),
-    			new TextField("School","School", $profile->School),
-    			DropdownField::create("State","State", $state_list, $profile->State)->setEmptyString('(Select one)'),
-    			new TextareaField("ProfileText", $profile->ProfileText),
-    			new DropdownField(
-    			  'TypeInterested',
-    			  'TypeInterested',
-    			  singleton('RecruitingProfile')->dbObject('TypeInterested')->enumValues(),
-    			  $profile->TypeInterested
-    			),
-    			new TextareaField("CollegesInterested", "Please list colleges / teams you are interested in",$profile->CollegesInterested),
-    			new CheckboxField("IsFlyer", "Are you a flyer?", $profile->IsFlyer),
-    			new CheckboxField("IsBase", "Are you a base?", $profile->IsBase),
-    			new HiddenField("pid", "", $profile->ID)
-    		),
-    		new Tab("YourSkills",
-    			new HeaderField("Skillsheader", "Skill categories",4)
-    		) /* ,
-	    	new Tab("Subscription",
-	    		new ReadonlyField("Renewed", "Subscription renewed", $nicedate2),
-	    		new ReadonlyField("Valid", "Subscription valid until", $nicedate)
-	    	) */
-    	));
-    
+//    	print_r($state_list);
+
+		$tabset = new TabSet(
+			"Root",
+			new Tab("Main",
+				$fn,$ln,$em,
+					DropdownField::create(
+					  'Gender',
+					  'Gender',
+					  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
+					  $profile->Gender
+					)->setEmptyString('(Select)'),
+				new TextField("Hometown","Hometown",$profile->Hometown),
+				DropdownField::create("State","State", $state_list, $profile->State)->setEmptyString('(Select one)'),
+				new TextField("School","School", $profile->School),
+				new TextareaField("ProfileText", $profile->ProfileText),
+				DropdownField::create(
+				  'TypeInterested',
+				  'Squad Type',
+				  singleton('RecruitingProfile')->dbObject('TypeInterested')->enumValues(),
+				  $profile->TypeInterested
+				)->setEmptyString('(Select one)'),
+				new TextareaField("CollegesInterested", "Please list colleges / teams you are interested in",$profile->CollegesInterested),
+				new HiddenField("pid", "", $profile->ID)
+			),
+			new Tab("YourSkills",
+//    			DateField("BirthDate")::create()->setConfig('showcalendar','true'),
+	    		new CheckboxField("IsBase", "Are you a base?", $profile->IsBase),
+	    		new CheckboxField("IsFlyer", "Are you a flyer?", $profile->IsFlyer),
+	    		new LiteralField("m1","<br/><hr/>"),
+    			new CheckboxField("ShowPartnerStuntSkills", "Partner Stunts",$profile->ShowPartnerStuntSkills),
+    			new CheckboxField("ShowGroupStuntSkills", "Group Stunts",$profile->ShowGroupStuntSkills),
+    			new CheckboxField("ShowStandingTumblingSkills", "Standing Tumbling Skills",$profile->ShowStandingTumblingSkills),
+    			new CheckboxField("ShowRunningTumblingSkills", "Running Tumbling Skills",$profile->ShowRunningTumblingSkills),
+    			new CheckboxField("BasketTossSkills", "Basket Toss Skills",$profile->ShowBasketTossSkills),
+    			new LiteralField("m2","<br/><hr/>"),
+				new HeaderField("Skillsheader", "Skill categories",4)
+			) /* ,
+			new Tab("Subscription",
+				new ReadonlyField("Renewed", "Subscription renewed", $nicedate2),
+				new ReadonlyField("Valid", "Subscription valid until", $nicedate)
+			) */
+		);
+		$fields = new FieldList($tabset);
+		    
     	$groupedSkillList = new GroupedList(Skill::get()); 
     	$grouped = $groupedSkillList->GroupedBy("CategoryID","Skills")->sort(array("CategoryID"=>"ASC", "SortOrder" => "ASC")); //,"Skills");
     	
     	$c=0;
 //    	$fields->addFieldToTab("Root.YourSkills", new HeaderField("Skillsheader", "Skill categories",4));
     	foreach($grouped as $skillset) {
-    		//$fields->add(new HeaderField("Header", $skillset->Skills->first()->Category()->Title,4));
-    		$idlist = $profile->Skills()->getIDList();
-    		
-    		$tempfield = new CheckboxSetfield("Skills_".$c++,$skillset->Skills->first()->Category()->Title,$skillset->Skills->toArray());
-    		$tempfield->setValue($idlist);
-    		$fields->addFieldToTab("Root.YourSkills",$tempfield);	
+    		if(($n=$skillset->Skills->count())>0) {
+	    		//$fields->add(new HeaderField("Header", $skillset->Skills->first()->Category()->Title,4));
+	    		$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
+	    		$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,$n,true)->setAttribute('placeholder','(Select one)');
+	    		$tempfield->addExtraClass("chosen-select");
+	    		$fields->addFieldToTab("Root.YourSkills",$tempfield);	
+	    	}
     	}
     	$fields->addFieldToTab("Root.Main",$uploadField);
-		
-		$sendAction = new FormAction('saveprofile', 'Update profile');
+    	
+		$sendAction = new FormAction('saveprofile', "Save changes");
 		$sendAction->addExtraClass("btn-large");
 		$actions = new FieldList(
 			$sendAction
@@ -399,18 +412,18 @@ class ProfileEditForm extends Form {
     
     
     public function saveprofile(array $data, Form $form) {
-	//    	print_r($data);
+		try{
 	    	$skills = array();
 	    	for($i=0;$i<6;$i++) {
 	    		if(array_key_exists("Skills_".$i, $data)) {
 	    			$skills = array_merge($skills,$data["Skills_".$i]);
 	    		}
 	    	}
-//	    	print_r($skills);
-	    	$profile = RecruitingProfile::get()->where("ID", $data["pid"])->first();
+	    	$profile = RecruitingProfile::get()->where("ID = ".$data["pid"])->first();
+	    	
 	    	if($profile) {
-	   			$profileSkills = $profile->Skills();
-	   			$profileSkills->setByIDList($skills);
+	   			$profile->Skills()->setByIDList($skills);
+//	   			$profile->Skills()->write();
 	   			/* foreach($skills as $s) {
 	   				$temp = Skill::get()->where("ID = ".$s)->limit(1)->first();
 	   				$profileSkills->add($temp);
@@ -421,6 +434,7 @@ class ProfileEditForm extends Form {
 	   			$profile->School = $data["School"];
 	   			$profile->ProfileText = $data["ProfileText"];
 	   			$profile->CollegesInterested = $data["CollegesInterested"];
+	   			
 	   			if(array_key_exists("IsFlyer",$data)) {
 		   			$profile->IsFlyer = $data["IsFlyer"];
 		   		}
@@ -433,15 +447,20 @@ class ProfileEditForm extends Form {
 		   		if(array_key_exists("TypeInterested",$data)) {
 		   			$profile->TypeInterested = $data["TypeInterested"];
 		   		}
-		   		if(sizeof($data["Images"]["Files"] > 0)) {
+		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
 			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
 			   	}
-	   			$profile->write();
+			   	$profile->Skills()->write(null, null, null, true);
+	   			$profile->write(null, null, null, true);
+	   			Controller::curr()->setMessage("success","Your profile was successfully updated.");
 	   			//print_r($data["Images"]["Files"][0]);
 	   		}
 	        // Do something with $data
-	        Controller::curr()->setMessage("success","Your profile was successfully updated.");
-	        Controller::curr()->redirectBack();
-	    }
+		}
+		catch(Exception $e) {
+			$this->setMessage("danger",$e->getMessage());
+		}
+		Controller::curr()->redirectBack();
+	}
     
 }

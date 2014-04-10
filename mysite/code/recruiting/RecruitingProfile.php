@@ -7,12 +7,29 @@ class RecruitingProfile extends DataObject {
 		"LastName" => "Varchar(64)",
 		"SubscriptionDate" => "SS_DateTime",
 		"Hometown" => "Varchar(64)",
+
 		"School" => "Varchar(64)",
 		"State" => "Varchar(2)",
+
+		"ShowPartnerStuntSkills" => "Boolean",
+		"ShowGroupStuntSkills" => "Boolean",
+		"ShowStandingTumblingSkills" => "Boolean",
+		"ShowRunningTumblingSkills" => "Boolean",
+		"ShowBasketTossSkills" => "Boolean",
+		
+		"OtherPartnerStuntSkills" => "Text",
+		"OtherGroupStuntSkills" => "Text",
+		"OtherStandingTumblingSkills" => "Text",
+		"OtherRunningTumblingSkills" => "Text",
+		"OtherBasketTossSkills" => "Text",
+
 		"IsFlyer" => "Boolean",
 		"IsBase" => "Boolean",
-		"Gender" => "Enum(',Male,Female','')",
+		
+		"Gender" => "Enum(',Boy,Girl','')",
+		
 		"TypeInterested" => "Enum(',Co-ed,All-girl,All-star','')",
+		
 		"CollegesInterested" => "Text",
 		"ProfileText" => "Text",
 		"OtherSkillsText" => "Text",
@@ -179,7 +196,7 @@ class RecruitingProfile extends DataObject {
 		return $this->FirstName." ".$this->LastName; //." (".$this->ID.")";
 	}
 	
-	function onBeforeWrite() {
+	/* function onBeforeWrite() {
 		$skills = array();
     	for($i=0;$i<6;$i++) {
     		$name = "Skills_".$i;
@@ -192,6 +209,6 @@ class RecruitingProfile extends DataObject {
 		$profileSkills = $this->Skills();
 		$profileSkills->setByIDList($skills);
 		parent::onBeforeWrite();
-	}
+	} */
 	
 }
