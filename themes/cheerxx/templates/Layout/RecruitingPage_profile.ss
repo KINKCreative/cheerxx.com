@@ -69,7 +69,7 @@
 		<div class="large-4 columns">
 			<div class="panel radius">
 				<h3>Interested in $FirstName $LastName?</h3>
-				<p>Drop her a note here. (coming soon)</p>
+				<p>Drop <% if Gender=="Boy"%>him<% else %>her<% end_if %> a note here. (coming soon)</p>
 			</div>
 		</div>
 	</div>

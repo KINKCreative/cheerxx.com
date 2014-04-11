@@ -302,14 +302,14 @@ class ProfileEditForm extends Form {
     		return false;
     	}
     	    	
-		$fn = new TextField("FirstName","First name", $profile->FirstName);
-		$fn->performReadonlyTransformation(true);
+		$fn = TextField::create("FirstName","First name", $profile->FirstName);
+		$fn->setAttribute("disabled",true);
 		
-		$ln = new TextField("LastName","Last name", $profile->LastName);
-		$ln->performReadonlyTransformation(true);
+		$ln = TextField::create("LastName","Last name", $profile->LastName);
+		$ln->setAttribute("disabled",true);
 		
-		$em = new TextField("Email","E-mail", $member->Email);
-		$em->performReadonlyTransformation(true);
+		$em = TextField::create("Email","E-mail", $member->Email);
+		$em->setAttribute("disabled",true);
 	
     	$sizeMB = 5; // 50 MB
 		$size = $sizeMB * 1024 * 1024; // 2 MB in bytes
@@ -336,17 +336,26 @@ class ProfileEditForm extends Form {
 		$tabset = new TabSet(
 			"Root",
 			new Tab("Main",
-				$fn,$ln,$em,
-					DropdownField::create(
-					  'Gender',
-					  'Gender',
-					  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
-					  $profile->Gender
-					)->setEmptyString('(Select)'),
+				new LiteralField("l1",'<div class="row"><div class="large-6 columns">'),
+				$fn,
+				new LiteralField("l2",'</div><div class="large-6 columns">'),
+				$ln,
+				new LiteralField("l3",'</div></div><div class="row"><div class="large-8 columns">'),
+				$em,
+				new LiteralField("l4",'</div><div class="large-4 columns">'),
+				DropdownField::create(
+				  'Gender',
+				  'Gender',
+				  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
+				  $profile->Gender
+				)->setEmptyString('(Select)'),
+				new LiteralField("l5",'</div></div><div class="row"><div class="large-8 columns">'),
 				new TextField("Hometown","Hometown",$profile->Hometown),
+				new LiteralField("l6",'</div><div class="large-4 columns">'),
 				DropdownField::create("State","State", $state_list, $profile->State)->setEmptyString('(Select one)'),
+				new LiteralField("l7",'</div></div>'),
 				new TextField("School","School", $profile->School),
-				new TextareaField("ProfileText", $profile->ProfileText),
+				new TextareaField("ProfileText", "Profile text", $profile->ProfileText, 10),
 				DropdownField::create(
 				  'TypeInterested',
 				  'Squad Type',
@@ -431,6 +440,7 @@ class ProfileEditForm extends Form {
 //	   			$profile->FirstName = $data["FirstName"];
 //	   			$profile->LastName = $data["LastName"];
 	   			$profile->Hometown = $data["Hometown"];
+	   			$profile->State = $data["State"];
 	   			$profile->School = $data["School"];
 	   			$profile->ProfileText = $data["ProfileText"];
 	   			$profile->CollegesInterested = $data["CollegesInterested"];
@@ -450,8 +460,7 @@ class ProfileEditForm extends Form {
 		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
 			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
 			   	}
-			   	$profile->Skills()->write(null, null, null, true);
-	   			$profile->write(null, null, null, true);
+	   			$profile->write();
 	   			Controller::curr()->setMessage("success","Your profile was successfully updated.");
 	   			//print_r($data["Images"]["Files"][0]);
 	   		}

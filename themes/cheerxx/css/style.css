@@ -247,7 +247,7 @@ fieldset {
 	padding: 1em;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: top center;
+	background-position: center top;
 	background-color: #333;
 }
 .header h1, .header h2, .header h3, .header h4 {
