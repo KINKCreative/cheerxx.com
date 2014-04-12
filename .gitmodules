@@ -1,3 +1,6 @@
 [submodule "plugins/chosen"]
 	path = plugins/chosen
 	url = https://github.com/harvesthq/chosen
+[submodule "plugins/countdown"]
+	path = plugins/countdown
+	url = https://github.com/rendro/countdown

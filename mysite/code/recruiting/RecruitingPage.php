@@ -17,7 +17,10 @@ class RecruitingPage extends Page {
 }
 
 class RecruitingPage_Controller extends Page_Controller {
-
+	
+	protected $vo;
+	protected $targetObject;
+	
 	private static $allowed_actions = array (
 		'profile',
 		// 'register',
@@ -89,6 +92,26 @@ class RecruitingPage_Controller extends Page_Controller {
 			$this->redirect("Security/login");
 		}
 		
+		require_once dirname(__FILE__).'/../controllers/vzaar/Vzaar.php';
+		Vzaar::$token = VZAAR_TOKEN;
+		Vzaar::$secret = VZAAR_SECRET; //'cheerxx';
+		
+		$sr = Vzaar::getUploadSignature();
+		$this->guid = $sr["vzaar-api"]["guid"];
+		$vo = new ArrayData(array(
+			"key" => $sr["vzaar-api"]["key"],
+			"bucket" => $sr["vzaar-api"]["bucket"],
+			"guid" => $sr["vzaar-api"]["guid"],
+			"accesskeyid" => $sr["vzaar-api"]["accesskeyid"],
+			"acl" => $sr["vzaar-api"]["acl"],
+			"policy" => $sr["vzaar-api"]["policy"],
+//			"success_action_redirect" => $sr["vzaar-api"]["success_action_redirect"],
+			"signature" => $sr["vzaar-api"]["signature"]
+		));
+		$this->vo = $vo;
+		
+		//$this->targetObject = $this->getSubmissionTarget();
+		
 //		if($profile = $this->getCurrentMemberProfile()) {
 			// if(!$profile->getHasActiveSubscription()) {
 			// 	$this->setMessage("warning","Your subscription is not active anymore. Please renew.");
@@ -107,7 +130,8 @@ class RecruitingPage_Controller extends Page_Controller {
 //				'MetaTitle' => $Item->Title,
 //				'Image' => $Item->Images() ? $Item->Images()->First() : false,
 			'Form' => $this->ProfileEditForm(),
-			'ClassName' => 'RecruitingProfile_Edit'
+			'ClassName' => 'RecruitingProfile_Edit',
+			"StripePublishableKey" => STRIPE_PUBLISHABLE_KEY
 		);
 	}
 	
@@ -332,7 +356,26 @@ class ProfileEditForm extends Form {
     
    		global $state_list;
 //    	print_r($state_list);
-
+		
+		/* $fields = new FieldList(
+			HeaderField::create("Info","Video information",3),
+			LiteralField::create("VideoTitle","<p>You are submitting for ".$title."</p>"),
+			LiteralField::create('firstrow','<div class="row"><div class="large-12 columns">'),
+			TextField::create('Title',"Enter video title"),
+			TextareaField::create('description', $descriptionText)->setAttribute("required pattern","[a-zA-Z]+"),
+			LiteralField::create('row2','</div></div><div class="row"><div class="large-12 columns">'),
+			LiteralField::create('FileUpload','<label for="file">Select a Video to Upload (max. 50Mb)</label>'.
+				'<input type="file" name="file" id="file" required accept="video/*" />'.
+				'<span class="file-error"></span>'),
+			$paymentField,
+			$this->guid ? HiddenField::create('VzaarGuid', "VzaarGuid", $this->guid) : HiddenField::create('VzaarGuid', "VzaarGuid")
+		);
+		if($targetObject) {
+			$fields->push(HiddenField::create("sid","sid", $targetObject->ID));
+			$fields->push(HiddenField::create("c","c", $targetObject->ClassName));
+		}
+		*/ 
+		
 		$tabset = new TabSet(
 			"Root",
 			new Tab("Main",
@@ -367,7 +410,7 @@ class ProfileEditForm extends Form {
 			),
 			new Tab("YourSkills",
 //    			DateField("BirthDate")::create()->setConfig('showcalendar','true'),
-	    		new CheckboxField("IsBase", "Are you a base?", $profile->IsBase),
+				new CheckboxField("IsBase", "Are you a base?", $profile->IsBase),
 	    		new CheckboxField("IsFlyer", "Are you a flyer?", $profile->IsFlyer),
 	    		new LiteralField("m1","<br/><hr/>"),
     			new CheckboxField("ShowPartnerStuntSkills", "Partner Stunts",$profile->ShowPartnerStuntSkills),

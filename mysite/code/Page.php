@@ -230,5 +230,14 @@ class Page_Controller extends ContentController {
 		
 	}
 	
+}
+
+
+
+class TempPage extends Page {
+
+	function init() {
+		parent::init();
+	}
 	
 }

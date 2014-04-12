@@ -13,8 +13,8 @@
 	</div>
 </div>
 
-<link rel="stylesheet" href="plugins/chosen/chosen.css">
-<script src="plugins/chosen/chosen.jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/plugins/chosen/chosen.css">
+<script src="/plugins/chosen/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
   /* var config = {
     '.chosen-select'           : {},

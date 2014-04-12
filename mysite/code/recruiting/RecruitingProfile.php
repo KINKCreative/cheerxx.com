@@ -196,7 +196,7 @@ class RecruitingProfile extends DataObject {
 		return $this->FirstName." ".$this->LastName; //." (".$this->ID.")";
 	}
 	
-	/* function onBeforeWrite() {
+	function onBeforeWrite() {
 		$skills = array();
     	for($i=0;$i<6;$i++) {
     		$name = "Skills_".$i;
@@ -209,6 +209,6 @@ class RecruitingProfile extends DataObject {
 		$profileSkills = $this->Skills();
 		$profileSkills->setByIDList($skills);
 		parent::onBeforeWrite();
-	} */
+	}	
 	
 }
