@@ -3,12 +3,18 @@
 class SkillCategory  extends DataObject {
 	
 	private static $db = array(
-		"Title" => "Varchar(255)"
+		"Title" => "Varchar(255)",
+		"MethodClassName" => "Varchar(255)",
 	);
 	
 	private static $has_many = array(
 		"Skills" => "Skill"
 	);
+	
+//	function onBeforeWrite() {
+//		$this->MethodClassName = implode(explode($this->Title," "));
+//		parent::onBeforeWrite();
+//	}
 	
 }
 

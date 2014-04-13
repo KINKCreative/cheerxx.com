@@ -111,7 +111,8 @@ class RecruitingAdmin extends ModelAdmin {
 	
 	static $managed_models = array(
 		'RecruitingProfile',
-		'Skill'
+		'Skill',
+		'SkillCategory'
 	);
 		
 	//public $showImportForm = false;

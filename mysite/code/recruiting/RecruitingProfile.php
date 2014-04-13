@@ -22,6 +22,12 @@ class RecruitingProfile extends DataObject {
 		"OtherStandingTumblingSkills" => "Text",
 		"OtherRunningTumblingSkills" => "Text",
 		"OtherBasketTossSkills" => "Text",
+		
+		"TotalPartnerStunt" => "Int",
+		"TotalGroupStunt" => "Int",
+		"TotalBasketToss" => "Int",
+		"TotalRunningTumbling" => "Int",
+		"TotalStandingTubmling" => "Int",
 
 		"IsFlyer" => "Boolean",
 		"IsBase" => "Boolean",
@@ -32,7 +38,7 @@ class RecruitingProfile extends DataObject {
 		
 		"CollegesInterested" => "Text",
 		"ProfileText" => "Text",
-		"OtherSkillsText" => "Text",
+//		"OtherSkillsText" => "Text",
 		"URLSegment" => "Varchar(255)"
 	);
 
@@ -98,15 +104,8 @@ class RecruitingProfile extends DataObject {
 		foreach($allSkills as $s) {
 			if(in_array($s->ID,$mySkillIds)) {
 				$s->Active = 1;
+				$customSkills->push($s);
 			}
-			$customSkills->push($s);
-		}
-		
-		if($this->Gender=="Male") {
-			$mySkills->removeByFilter("CategoryID IN (5,6)");
-		}
-		if(!$this->IsFlyer) {
-			$mySkills->removeByFilter("CategoryID = 5");
 		}
 		
 		$groupedSkillList = new GroupedList($customSkills);
@@ -208,7 +207,21 @@ class RecruitingProfile extends DataObject {
     	}
 		$profileSkills = $this->Skills();
 		$profileSkills->setByIDList($skills);
+		
+		if($this->Gender=="Boy") {
+			$this->ShowBasketTossSkills = false;
+			$this->IsFlyer = false;
+		}
+		else {
+			if(!$this->IsFlyer && !$this->IsBase) {
+				$this->ShowPartnerStuntSkills = false;
+				$this->ShowGroupStuntSkills = false;
+			}
+		}
+		
 		parent::onBeforeWrite();
-	}	
+	}
+	
+	
 	
 }

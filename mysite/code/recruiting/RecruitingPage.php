@@ -28,7 +28,8 @@ class RecruitingPage_Controller extends Page_Controller {
 		'editprofile',
 		'ProfileEditForm',
 		// 'RegisterForm',
-		'recruitingwebhook'
+		'recruitingwebhook',
+		'update'
 	);	
 
 	public function init() {	
@@ -311,6 +312,15 @@ class RecruitingPage_Controller extends Page_Controller {
 		return $this->renderWith("Javascript_Recruiting");
 	}	*/    
 	
+	public function update() {
+		echo("Update performed");
+		foreach(SkillCategory::get() as $skillCategory) {
+			$skillCategory->write();
+			echo("Skillcategory ".$skillCategory->Title." updated.<br/>");
+		}
+		return false;
+	}
+	
 }
 
 
@@ -393,7 +403,7 @@ class ProfileEditForm extends Form {
 				  $profile->Gender
 				)->setEmptyString('(Select)'),
 				new LiteralField("l5",'</div></div><div class="row"><div class="large-8 columns">'),
-				new TextField("Hometown","Hometown",$profile->Hometown),
+				new TextField("Hometown","Hometown",$profile->skHometown),
 				new LiteralField("l6",'</div><div class="large-4 columns">'),
 				DropdownField::create("State","State", $state_list, $profile->State)->setEmptyString('(Select one)'),
 				new LiteralField("l7",'</div></div>'),
@@ -413,11 +423,11 @@ class ProfileEditForm extends Form {
 				new CheckboxField("IsBase", "Are you a base?", $profile->IsBase),
 	    		new CheckboxField("IsFlyer", "Are you a flyer?", $profile->IsFlyer),
 	    		new LiteralField("m1","<br/><hr/>"),
+	    		new CheckboxField("ShowStandingTumblingSkills", "Standing Tumbling Skills",$profile->ShowStandingTumblingSkills),
+	    		new CheckboxField("ShowRunningTumblingSkills", "Running Tumbling Skills",$profile->ShowRunningTumblingSkills),
     			new CheckboxField("ShowPartnerStuntSkills", "Partner Stunts",$profile->ShowPartnerStuntSkills),
     			new CheckboxField("ShowGroupStuntSkills", "Group Stunts",$profile->ShowGroupStuntSkills),
-    			new CheckboxField("ShowStandingTumblingSkills", "Standing Tumbling Skills",$profile->ShowStandingTumblingSkills),
-    			new CheckboxField("ShowRunningTumblingSkills", "Running Tumbling Skills",$profile->ShowRunningTumblingSkills),
-    			new CheckboxField("BasketTossSkills", "Basket Toss Skills",$profile->ShowBasketTossSkills),
+    			new CheckboxField("ShowBasketTossSkills", "Basket Toss Skills",$profile->ShowBasketTossSkills),
     			new LiteralField("m2","<br/><hr/>"),
 				new HeaderField("Skillsheader", "Skill categories",4)
 			) /* ,
@@ -434,15 +444,43 @@ class ProfileEditForm extends Form {
     	$c=0;
 //    	$fields->addFieldToTab("Root.YourSkills", new HeaderField("Skillsheader", "Skill categories",4));
     	foreach($grouped as $skillset) {
-    		if(($n=$skillset->Skills->count())>0) {
-	    		//$fields->add(new HeaderField("Header", $skillset->Skills->first()->Category()->Title,4));
-	    		$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
-	    		$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,$n,true)->setAttribute('placeholder','(Select one)');
-	    		$tempfield->addExtraClass("chosen-select");
-	    		$fields->addFieldToTab("Root.YourSkills",$tempfield);	
-	    	}
+    			$skillCategoryID = $skillset->CategoryID;
+    			$category = SkillCategory::get()->where("ID = ".$skillCategoryID)->first();
+
+    			$skillClass = $category->MethodClassName;
+    			$fieldName = "Show".$skillClass."Skills";
+//    			echo($fieldName);
+    			if( $profile->{$fieldName} == 1 ) {
+//    				echo($skillClass);
+    				//$fields->add(new HeaderField("Header", $skillset->Skills->first()->Category()->Title,4));
+		    		
+		    		$fieldLabel = "Other ".$category->Title." skills";
+		    		$myclassName = "Other".$category->MethodClassName."Skills";
+		    		$textareaField = new TextareaField("Other".$skillClass."Skills", $fieldLabel, $profile->{$myclassName}, 3);
+		    		
+		    		$n=$skillset->Skills->count();
+//		    		if(($n=$skillset->Skills->count())>0) {
+		    			$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
+		    			$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,"",true)->setAttribute('placeholder','(Select one)');
+		    			$tempfield->addExtraClass("chosen-select");
+		    			$fields->addFieldToTab("Root.YourSkills",$tempfield);
+			    		$fields->addFieldToTab("Root.YourSkills",$textareaField);
+//			    	}
+		    		
+    			}
+    			else {    				
+    				$fields->removeByName("Show".$skillClass."Skills");
+    			}
     	}
     	$fields->addFieldToTab("Root.Main",$uploadField);
+    	
+    	if($profile->Gender == "Boy") {
+    		$fields->removeByName("IsFlyer");
+    		$fields->removeByName("ShowBasketTossSkills");
+    	}
+    	else {
+    		$fields->removeByName("IsBase");
+    	}
     	
 		$sendAction = new FormAction('saveprofile', "Save changes");
 		$sendAction->addExtraClass("btn-large");
@@ -464,6 +502,7 @@ class ProfileEditForm extends Form {
     
     
     public function saveprofile(array $data, Form $form) {
+//    	print_r($data);
 		try{
 	    	$skills = array();
 	    	for($i=0;$i<6;$i++) {
@@ -472,38 +511,76 @@ class ProfileEditForm extends Form {
 	    		}
 	    	}
 	    	$profile = RecruitingProfile::get()->where("ID = ".$data["pid"])->first();
-	    	print_r($skills);
 	    	if($profile) {
-	   			$profile->Skills()->setByIDList($skills);
-	   			$profile->Skills()->write();
 	   			/* foreach($skills as $s) {
 	   				$temp = Skill::get()->where("ID = ".$s)->limit(1)->first();
 	   				$profileSkills->add($temp);
 	   			} */
 //	   			$profile->FirstName = $data["FirstName"];
 //	   			$profile->LastName = $data["LastName"];
-	   			$profile->Hometown = $data["Hometown"];
-	   			$profile->State = $data["State"];
-	   			$profile->School = $data["School"];
-	   			$profile->ProfileText = $data["ProfileText"];
-	   			$profile->CollegesInterested = $data["CollegesInterested"];
+				$myFields = array(
+					"IsBase",
+					"IsFlyer",
+					"Hometown",
+					"State",
+					"School",
+					"ProfileText",
+					"CollegesInterested",
+					"ShowPartnerStuntSkills",
+					"ShowGroupStuntSkills",
+					"ShowRunningTumblingSkills",
+					"ShowStandingTubmlingSkills",
+					"ShowBasketTossSkills",
+					"OtherPartnerStuntSkills",
+					"OtherGroupStuntSkills",
+					"OtherRunningTumblingSkills",
+					"OtherStandingTumblingSkills",
+					"OtherBasketTossSkills"
+				);
+				foreach($myFields as $fieldName) {
+					if(array_key_exists($fieldName,$data)) {
+						$profile->{$fieldName} = $data[$fieldName];
+					}
+				}
+					
 	   			
-	   			if(array_key_exists("IsFlyer",$data)) {
-		   			$profile->IsFlyer = $data["IsFlyer"];
-		   		}
-		   		if(array_key_exists("IsBase",$data)) {
-		   			$profile->IsBase = $data["IsBase"];
-		   		}
-		   		if(array_key_exists("Gender",$data)) {
-		   			$profile->Gender = $data["Gender"];
-		   		}
-		   		if(array_key_exists("TypeInterested",$data)) {
-		   			$profile->TypeInterested = $data["TypeInterested"];
-		   		}
-		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
-			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
-			   	}
-	   			$profile->write();
+//	   			$profile->State = $data["State"];
+//	   			$profile->School = $data["School"];
+//	   			$profile->ProfileText = $data["ProfileText"];
+//	   			$profile->CollegesInterested = $data["CollegesInterested"];
+//	   			
+//	   			$profile->ShowPartnerStuntSkills = $data["ShowPartnerStuntSkills"];
+//	   			$profile->ShowGroupStuntSkills = $data["ShowGroupStuntSkills"];
+//	   			$profile->ShowRunningTumblingSkills = $data["ShowRunningTumblingSkills"];
+//	   			$profile->ShowStandingTumblingSkills = $data["ShowStandingTumblingSkills"];
+//	   			$profile->ShowBaketTossSkills = $data["ShowBaketTossSkills"];
+//	   			
+//	   			$profile->OtherPartnerStuntSkills = $data["OtherPartnerStuntSkills"];
+//	   			$profile->OtherGroupStuntSkills = $data["OtherGroupStuntSkills"];
+//	   			$profile->OtherRunningTumblingSkills = $data["OtherRunningTumblingSkills"];
+//	   			$profile->OtherStandingTumblingSkills = $data["OtherStandingTumblingSkills"];
+//	   			$profile->OtherBaketTossSkills = $data["OtherBaketTossSkills"];
+//	   				   			
+//	   			
+//	   			if(array_key_exists("IsFlyer",$data)) {
+//		   			$profile->IsFlyer = $data["IsFlyer"];
+//		   		}
+//		   		if(array_key_exists("IsBase",$data)) {
+//		   			$profile->IsBase = $data["IsBase"];
+//		   		}
+//		   		if(array_key_exists("Gender",$data)) {
+//		   			$profile->Gender = $data["Gender"];
+//		   		}
+//		   		if(array_key_exists("TypeInterested",$data)) {
+//		   			$profile->TypeInterested = $data["TypeInterested"];
+//		   		}
+//		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
+//			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
+//			   	}
+			   	$profile->write();
+			   	$profile->Skills()->setByIDList($skills);
+			   	$profile->Skills()->write();
+			   	
 	   			Controller::curr()->setMessage("success","Your profile was successfully updated.");
 	   			//print_r($data["Images"]["Files"][0]);
 	   		}
