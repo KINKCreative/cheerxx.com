@@ -178,7 +178,7 @@ fieldset {
 .layout {
 	padding-top: 2em;
 }
-.security {
+.security, .TempPage {
 	background: #035C8E url(../images/bg-inv.jpg) no-repeat right top !important;
 	padding-top: 30px;
 }
