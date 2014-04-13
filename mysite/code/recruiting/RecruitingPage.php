@@ -472,10 +472,10 @@ class ProfileEditForm extends Form {
 	    		}
 	    	}
 	    	$profile = RecruitingProfile::get()->where("ID = ".$data["pid"])->first();
-	    	
+	    	print_r($skills);
 	    	if($profile) {
 	   			$profile->Skills()->setByIDList($skills);
-//	   			$profile->Skills()->write();
+	   			$profile->Skills()->write();
 	   			/* foreach($skills as $s) {
 	   				$temp = Skill::get()->where("ID = ".$s)->limit(1)->first();
 	   				$profileSkills->add($temp);
