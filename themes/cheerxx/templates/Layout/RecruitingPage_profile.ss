@@ -40,16 +40,18 @@
 				<ul class="large-block-grid-2">
 				<% loop GroupedSkills %>
 					<li>
+					<h3>$Category.Title</h3>
 					<% loop Skills %>
 						<% if First %>
-						<h3>$Category.Title</h3>
+						<div data-score="$CategoryScore"></div>
 						<ul class="skills">
 						<% end_if %>
-							<li><i class="<% if Active %>icon-ok-circled<% else %>icon-cancel<% end_if %>"></i> $Title</li>
+							<li><i class="icon-ok-circled"></i> $Title</li>
 						<% if Last %>
 							</ul>
 						<% end_if %>
 					<% end_loop %>
+					$TotalScore
 					</li>
 				<% end_loop %>
 				</ul>

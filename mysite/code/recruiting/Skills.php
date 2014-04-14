@@ -14,8 +14,7 @@ class SkillCategory  extends DataObject {
 //	function onBeforeWrite() {
 //		$this->MethodClassName = implode(explode($this->Title," "));
 //		parent::onBeforeWrite();
-//	}
-	
+//	}	
 }
 
 class Skill  extends DataObject {

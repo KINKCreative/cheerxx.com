@@ -27,7 +27,7 @@ class RecruitingProfile extends DataObject {
 		"TotalGroupStunt" => "Int",
 		"TotalBasketToss" => "Int",
 		"TotalRunningTumbling" => "Int",
-		"TotalStandingTubmling" => "Int",
+		"TotalStandingTumbling" => "Int",
 
 		"IsFlyer" => "Boolean",
 		"IsBase" => "Boolean",
@@ -94,24 +94,55 @@ class RecruitingProfile extends DataObject {
 	}
 	
 	public function GroupedSkills() {
+	
+		
+//		$skills = new DataList();
+		
+		
+		
 		$skills = new ArrayList();
 
 		$allSkills = Skill::get();
-		$mySkills = $this->Skills();
-		$mySkillIds = $mySkills->getIDList();
-		
-		$customSkills = new ArrayList();
-		foreach($allSkills as $s) {
-			if(in_array($s->ID,$mySkillIds)) {
-				$s->Active = 1;
-				$customSkills->push($s);
+		$mySkillCategories = $this->Skills()->sort("CategoryID ASC")->column("CategoryID");
+
+		foreach($mySkillCategories as $cID) {
+	
+			$category = SkillCategory::get()->where("ID = ".$cID)->first();
+			if($category) {
+				$myclassName = "Total".$category->MethodClassName;
+				echo($this->{$myclassName});
+				$tempSkills = $this->Skills()->where("CategoryID = ".$cID);
+				$skills->push(new ArrayData(array(
+					"Category" => $category,
+					"TotalScore" => $this->{$myclassName},
+					"Skills" => $tempSkills
+				)));
+				
+				
+				//$customSkills = new ArrayList();
+				
+				
+//				foreach( as $s) {
+//					if(in_array($s->ID,$mySkillIds)) {
+//						$s->Active = 1;
+//						$customSkills->push($s);
+//					}
+//				}
 			}
 		}
+		//$grouped = $mySkills->GroupedBy("CategoryID","Skills")->sort(array("CategoryID"=>"ASC", "SortOrder" => "ASC"));
+		//$categoryIds = $mySkills->getIDList();
 		
-		$groupedSkillList = new GroupedList($customSkills);
-		$grouped = $groupedSkillList->GroupedBy("CategoryID","Skills")->sort(array("CategoryID"=>"ASC", "SortOrder" => "ASC"));
+//		foreach($grouped as $s) {
 		
-		return $grouped;
+//		$mySkillIds = $mySkills->getIDList();
+//		
+
+//		
+//		$groupedSkillList = new GroupedList($customSkills);
+//		$grouped = $groupedSkillList->GroupedBy("CategoryID","Skills")->sort(array("CategoryID"=>"ASC", "SortOrder" => "ASC"));
+		
+		return $skills;
 	}
 	
 	function Link() {
@@ -196,11 +227,11 @@ class RecruitingProfile extends DataObject {
 	}
 	
 	function onBeforeWrite() {
-		$skills = array();
 		
-		
-		// FOR THE CMS
-    	/* for($i=0;$i<6;$i++) {
+    	/*
+    	// FOR THE CMS
+    	$skills = array();
+    	for($i=0;$i<6;$i++) {
     		$name = "Skills_".$i;
     		if($this->getField($name)) {
     			$value = $this->getField($name);
@@ -210,7 +241,6 @@ class RecruitingProfile extends DataObject {
     	}
 		$profileSkills = $this->Skills();
 		$profileSkills->setByIDList($skills); */
-		
 		
 		// FIRST SAVE
 		if(!$this->ID) {
@@ -228,6 +258,21 @@ class RecruitingProfile extends DataObject {
 					$this->ShowGroupStuntSkills = false;
 				}
 			}
+		}
+		
+		$skillCategories = SkillCategory::get();
+		foreach($skillCategories as $c) {
+			$className = $c->MethodClassName;
+			$skillCategoryID = $c->ID;
+			print_r($c->Skills);	
+//			$totalCount = $c->Skills()->Count();
+			
+//			if($totalCount>0) {
+//				$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
+//				$fieldName = "Total".$className;
+//				$score = ceil(10*$skillCount/$totalCount);
+//				$this->{$fieldName} = $score;
+//			}
 		}
 		
 		parent::onBeforeWrite();

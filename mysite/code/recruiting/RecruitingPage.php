@@ -454,27 +454,28 @@ class ProfileEditForm extends Form {
 
     			$skillClass = $category->MethodClassName;
     			$fieldName = "Show".$skillClass."Skills";
+//    			echo($fieldName." ///");
 //    			echo($fieldName);
     			if( $profile->{$fieldName} == 1 ) {
 //    				echo($skillClass);
     				//$fields->add(new HeaderField("Header", $skillset->Skills->first()->Category()->Title,4));
 		    		
-		    		$fieldLabel = "Other ".$category->Title." skills";
+		    		$fieldLabel = "Enter other ".$category->Title." skills";
 		    		$myclassName = "Other".$category->MethodClassName."Skills";
 		    		$textareaField = new TextareaField("Other".$skillClass."Skills", $fieldLabel, $profile->{$myclassName}, 3);
 		    		
 		    		$n=$skillset->Skills->count();
 //		    		if(($n=$skillset->Skills->count())>0) {
-		    			$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
-		    			$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,"",true)->setAttribute('placeholder','(Select one)');
-		    			$tempfield->addExtraClass("chosen-select");
-		    			$fields->addFieldToTab("Root.YourSkills",$tempfield);
-			    		$fields->addFieldToTab("Root.YourSkills",$textareaField);
+	    			$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
+	    			$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,"",true)->setAttribute('placeholder','(Select one)');
+	    			$tempfield->addExtraClass("chosen-select");
+	    			$fields->addFieldToTab("Root.YourSkills",$tempfield);
+		    		$fields->addFieldToTab("Root.YourSkills",$textareaField);
 //			    	}
 		    		
     			}
     			else {    				
-    				$fields->removeByName("Show".$skillClass."Skills");
+    				//$fields->removeByName("Show".$skillClass."Skills");
     			}
     	}
     	$fields->addFieldToTab("Root.Main",$uploadField);
