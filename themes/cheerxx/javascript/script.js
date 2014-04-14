@@ -25,7 +25,10 @@ $(document).ready(function() {
 		score: function() {
 		    return $(this).attr('data-score');
 		},
-		readOnly: true
+		readOnly: true,
+		starHalf      : 'plugins/raty/lib/images/star-half.png',
+		starOff       : 'plugins/raty/lib/images/star-off.png',
+		starOn        : 'plugins/raty/lib/images/star-on.png'
 	});
 	
 });
