@@ -583,11 +583,11 @@ table .unscored td {
 .formwrap .Actions {
 	text-align: right;
 }
-.formwrap input.text, .formwrap select  {
+.formwrap .text input, .formwrap select  {
 	margin-bottom: 0;
 	background-color: #333 !important;
 	border: 1px solid #444 !important;
-	color: #EFEFEF;
+	color: #AAA !important;
 }
 .formwrap .dropdown label, .formwrap .text label {
 	display: none !important;

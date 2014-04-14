@@ -45,6 +45,7 @@
 											<h3>$FirstName $LastName
 												<% if IsFlyer %><span class="label radius extra">flyer</span><% end_if %>
 												<% if IsBase %><span class="label radius extra">base</span><% end_if %>
+												<% if TypeInterested %><span class="label secondary radius">$TypeInterested</span><% end_if %>
 											</h3>
 											<p>
 												Hometown: <strong>$Hometown</strong>
