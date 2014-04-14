@@ -257,19 +257,20 @@ class RecruitingProfile extends DataObject {
 				}
 			}
 		}
-		
-		//UPDATE TOTALS
-		$skillCategories = SkillCategory::get();
-		foreach($skillCategories as $c) {
-			$className = $c->MethodClassName;
-			$skillCategoryID = $c->ID;
-			$totalCount = $c->Skills()->Count();
-			
-			if($totalCount>0) {
-				$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
-				$fieldName = "Total".$className;
-				$score = floor(10*$skillCount/$totalCount);
-				$this->{$fieldName} = $score;
+		else {
+			//UPDATE TOTALS
+			$skillCategories = SkillCategory::get();
+			foreach($skillCategories as $c) {
+				$className = $c->MethodClassName;
+				$skillCategoryID = $c->ID;
+				$totalCount = $c->Skills()->Count();
+				
+				if($totalCount>0) {
+					$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
+					$fieldName = "Total".$className;
+					$score = floor(5*$skillCount/$totalCount);
+					$this->{$fieldName} = $score;
+				}
 			}
 		}
 		

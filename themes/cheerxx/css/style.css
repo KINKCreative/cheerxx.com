@@ -292,8 +292,19 @@ fieldset {
 	max-width: 80px;
 }
 .round-large {
-	max-width: 33% !important;
-	
+	max-width: 100% !important;	
+}
+.subpage {
+	text-align: center;
+}
+table .firstColumn {
+	min-width: 130px;
+}
+table p {
+	margin: 0;
+}
+.small {
+	font-size: 80%;
 }
 
 .stripe {

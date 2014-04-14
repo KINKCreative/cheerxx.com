@@ -92,6 +92,7 @@ class RecruitingPage_Controller extends Page_Controller {
 			$this->setMessage("error","You need to be logged in to register.");
 			Session::set('BackURL',"recruiting/editprofile");
 			$this->redirect("Security/login");
+			return false;
 		}
 		
 		require_once dirname(__FILE__).'/../controllers/vzaar/Vzaar.php';

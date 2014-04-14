@@ -92,6 +92,14 @@ class Challenge extends DataObject {
 			return false;
 		}
 		else {
+			if($this->SuperChallengeID) {
+				if(!$this->StartTime) {
+					$this->StartTime = $this->SuperChallenge()->StartTime;
+				}
+				if(!$this->EndTime) {
+					$this->EndTime = $this->SuperChallenge()->EndTime;
+				}
+			}
 			parent::onBeforeWrite();
 		}
 	}
