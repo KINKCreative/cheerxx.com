@@ -485,7 +485,8 @@ class ProfileEditForm extends Form {
 		    		
 		    		$n=$skillset->Skills->count();
 //		    		if(($n=$skillset->Skills->count())>0) {
-	    			$idlist = implode(",", array_unique($profile->Skills()->getIDList()));
+	    			$idlist = implode(",", array_unique($profile->Skills()->sort("SortOrder ASC")->getIDList()));
+	    			$skillset->Skills->sort("SortOrder","ASC");
 	    			$tempfield = ListboxField::create("Skills_".$skillset->CategoryID,$skillset->Skills->first()->Category()->Title,$skillset->Skills->map("ID","Title"),$idlist,"",true)->setAttribute('placeholder','(Select one)');
 	    			$tempfield->addExtraClass("chosen-select");
 	    			$fields->addFieldToTab("Root.YourSkills",$tempfield);
