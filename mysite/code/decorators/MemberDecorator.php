@@ -15,6 +15,10 @@ class MemberExtend extends DataExtension {
 		'Favorites' => 'Video'
 //		'Favorites' => 'Video'
 	);
+	
+	private $has_one = array(
+		"RecruitingProfile" => "RecruitingProfile"
+	);
 		
 	public function updateCMSFields(FieldList $fields) {
 		$fields->addFieldToTab("Root.Main", new TextField('Username', 'Username', $this->owner->Username), "Email"); 

@@ -420,22 +420,22 @@ form .readonly {
 	background: #FFFFFF;
 	color: #FFFFFF;
 }
-.Male a:hover {
+.Boy a:hover {
 	color: #00aeef;
 }
-.Male a.state:hover, .Male .button {
-	background: #009cce !;
+.Boy a.state:hover, .Male .button {
+	background: #009cce !important;
 	color: #FFFFFF !important;
+}
+.Girl a {
+	background: #df00ad;
+	color: #FFFFFF;
 }
 
-.Female a:hover {
-	color: #df00ad;
+.Girl a:hover {
+	background: #8c006d;
 }
-.Female a.state:hover, .Female .button {
-	background: #df00ad !important;
-	color: #FFFFFF !important;
-}
-.Female .label.extra {
+.Girl .label.extra {
 	background: #df00ad;
 }
 

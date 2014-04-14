@@ -1,17 +1,15 @@
 <% with Profile %>
 
-<% include Heading %>
-
 <div class="profilebackground $Gender">
 	<div class="row">
 		<div class="medium-4 columns">
-			$Images.First.CroppedImage(400,400)
+			$Images.First.CroppedFromTopImage(400,400)
 		</div>
 		<div class="medium-8 columns">
 			<h2>
 				$FirstName $LastName
 			</h2>
-			<p> <span class="label secondary radius">$Gender</span> 
+			<p> <% if TypeInterested %><span class="label secondary radius">$TypeInterested</span><% end_if %>
 				<% if IsFlyer %><span class="label radius extra">flyer</span><% end_if %>
 				<% if IsBase %><span class="label radius extra">base</span><% end_if %>
 				<br/>
@@ -52,6 +50,7 @@
 							</ul>
 						<% end_if %>
 					<% end_loop %>
+					<% if OtherSkills %><p><strong>Other</strong>: $OtherSkills</p><% end_if %>
 					</li>
 				<% end_loop %>
 				</ul>

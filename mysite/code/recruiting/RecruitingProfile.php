@@ -38,6 +38,7 @@ class RecruitingProfile extends DataObject {
 		
 		"CollegesInterested" => "Text",
 		"ProfileText" => "Text",
+		"VideoEmbed" => "Text",
 //		"OtherSkillsText" => "Text",
 		"URLSegment" => "Varchar(255)"
 	);
@@ -109,12 +110,14 @@ class RecruitingProfile extends DataObject {
 	
 			$category = SkillCategory::get()->where("ID = ".$cID)->first();
 			if($category) {
-				$myclassName = "Total".$category->MethodClassName;
-				echo($this->{$myclassName});
+				$myClassName = "Total".$category->MethodClassName;
+				$otherClassName = "Other".$category->MethodClassName."Skills";
+//				echo($this->{$myclassName});
 				$tempSkills = $this->Skills()->where("CategoryID = ".$cID);
 				$skills->push(new ArrayData(array(
 					"Category" => $category,
-					"TotalScore" => $this->{$myclassName},
+					"TotalScore" => $this->{$myClassName},
+					"OtherSkills" => $this->{$otherClassName},
 					"Skills" => $tempSkills
 				)));
 				

@@ -41,7 +41,7 @@
 												Hometown: <strong>$Hometown</strong>
 												<% if School %><br/>School: <strong>$School</strong><% end_if %>
 											</p>
-											<a href="$Link" class="button radius small">View profile</a>
+											<span class="$Gender"><a href="$Link" class="button radius small">View profile</a></span>
 										</div>
 									</div>
 								</div>

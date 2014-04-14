@@ -314,11 +314,11 @@ class RecruitingPage_Controller extends Page_Controller {
 	}	*/    
 	
 	public function update() {
-		echo("Update performed");
+		/* echo("Update performed");
 		foreach(SkillCategory::get() as $skillCategory) {
 			$skillCategory->write();
 			echo("Skillcategory ".$skillCategory->Title." updated.<br/>");
-		}
+		} */
 		echo("Profiles");
 		foreach(RecruitingProfile::get() as $profile) {
 			echo("Updated profile: $FirstName $LastName");
@@ -363,9 +363,9 @@ class ProfileEditForm extends Form {
 		$ln->setAttribute("disabled",true);
 		
 		$em = TextField::create("Email","E-mail", $member->Email);
-		$em->setAttribute("disabled",true);
+		//$em->setAttribute("disabled",true);
 		
-		$ge = TextField::create("Gender","Gender", $member->Gender);
+		$ge = TextField::create("Gender","Gender", $profile->Gender);
 		$ge->setAttribute("disabled",true);
 	
     	$sizeMB = 5; // 50 MB
@@ -504,7 +504,7 @@ class ProfileEditForm extends Form {
     		$fields->removeByName("ShowBasketTossSkills");
     	}
     	else {
-    		$fields->removeByName("IsBase");
+    		//$fields->removeByName("IsBase");
     	}
     	
 		$sendAction = new FormAction('saveprofile', "Save changes");
@@ -555,7 +555,7 @@ class ProfileEditForm extends Form {
 					"ShowPartnerStuntSkills",
 					"ShowGroupStuntSkills",
 					"ShowRunningTumblingSkills",
-					"ShowStandingTubmlingSkills",
+					"ShowStandingTumblingSkills",
 					"ShowBasketTossSkills",
 					"OtherPartnerStuntSkills",
 					"OtherGroupStuntSkills",
