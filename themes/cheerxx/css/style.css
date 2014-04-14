@@ -271,10 +271,10 @@ fieldset {
 
 .round-image {
 	display: inline-block;
-	border-radius: 300px;
-	-webkit-border-radius: 300px;
-	-moz-border-radius: 300px;
-	-o-border-radius:300px;
+	border-radius: 1000px;
+	-webkit-border-radius: 1000px;
+	-moz-border-radius: 1000px;
+	-o-border-radius:1000px;
 	border: 8px solid #FFFFFF;
 	overflow: hidden;
 	width: 100%;
@@ -290,6 +290,10 @@ fieldset {
 .round-small {
 	border: 5px solid #FFFFFF;
 	max-width: 80px;
+}
+.round-large {
+	max-width: 33% !important;
+	
 }
 
 .stripe {
