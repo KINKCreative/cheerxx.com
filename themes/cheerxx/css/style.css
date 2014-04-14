@@ -605,6 +605,10 @@ table .unscored td {
 	float: none !important;
 	margin: 0 1em 0 0 !important;
 }
+.header .button {
+	margin-top: 0.4em;
+	margin-bottom: 0;
+}
 
 
 @media only screen and (min-width: 768px) {
