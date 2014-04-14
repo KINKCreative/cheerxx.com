@@ -31,10 +31,10 @@
 				
 				<div class="content">$Content</div>
 				<h2>Profiles</h2>
-				<% if Profiles %>
-					<% loop Profiles %>
+				<% if PaginatedProfiles %>
+					<% loop PaginatedProfiles %>
 						<div class="panel $Gender profilepreview">
-							<% if State %><a class="state" href="?state=$State">KY</a><% end_if %>
+							<% if State %><a class="state" href="$Up.Link?State=$State">$State</a><% end_if %>
 							<a href="$Link" title="View profile">
 								<div class="row">
 									<div class="small-3 columns">
@@ -50,6 +50,7 @@
 												Hometown: <strong>$Hometown</strong>
 												<% if School %><br/>School: <strong>$School</strong><% end_if %>
 											</p>
+											$ProfileText.Summary(20)
 											<span class="$Gender"><a href="$Link" class="button radius small">View profile</a></span>
 										</div>
 									</div>
@@ -57,6 +58,22 @@
 							</a>
 						</div>
 					<% end_loop %>
+					
+					<% if $PaginatedProfiles.MoreThanOnePage %>
+						<ul class="pagination text-centered">
+						<li class="arrow <% if $PaginatedProfiles.NotFirstPage %><% else %>unavailable<% end_if %>"><a href="" class="$PaginatedProfiles.PrevLink">&laquo;</a></li>
+					    
+					    <% loop PaginatedProfiles.Pages %>
+				            <% if $Link %>
+				                <li><a href="$Link" <% if CurrentBool %>class="current"<% end_if %> >$PageNum</a></li>
+				            <% else %>
+				                <li class="unavailable"><a href="">&hellip;</a></li>
+				            <% end_if %>
+					     <% end_loop %>
+					    <li class="arrow <% if $PaginatedProfiles.NotLastPage %><% else %>unavailable<% end_if %>"><a href="$PaginatedProfiles.NextLink" class="$PaginatedProfiles.PrevLink">&raquo;</a></li>
+					    </ul>
+					<% end_if %>
+					
 				<% else %>
 					<p>No profiles found. Please expand your search.</p>
 				<% end_if %>

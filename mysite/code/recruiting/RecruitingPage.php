@@ -143,11 +143,11 @@ class RecruitingPage_Controller extends Page_Controller {
 			new CheckboxField("IsBase","Base"),
 			new CheckboxField("IsFlyer","Flyer"),
 			new LiteralField("l2",'</div><div class="medium-3 small-6 columns">'),
-			DropdownField::create("Gender","Gender", singleton('RecruitingProfile')->dbObject('Gender')->enumValues())->setEmptyString("(Gender)"),
+			DropdownField::create("Gender","Gender", singleton('RecruitingProfile')->dbObject('Gender')->enumValues())->setEmptyString("(Any gender)"),
 			new LiteralField("l3",'</div><div class="medium-3 small-6 columns">'),
-			DropdownField::create("TypeInterested","Squad type", singleton('RecruitingProfile')->dbObject('TypeInterested')->enumValues())->setEmptyString("(Squad type)"),
+			DropdownField::create("TypeInterested","Squad type", singleton('RecruitingProfile')->dbObject('TypeInterested')->enumValues())->setEmptyString("(Any squad)"),
 			new LiteralField("l4",'</div><div class="medium-2 columns">'),
-			DropdownField::create("State","State", $state_list)->setEmptyString("(State)"),
+			DropdownField::create("State","State", $state_list)->setEmptyString("(Any state)"),
 			new LiteralField("l5",'</div><div class="medium-2 columns">'),
 			TextField::create("Keyword","Search text")->setAttribute("placeholder","Keywords"),
 			new LiteralField("l6",'</div></div>')
@@ -159,7 +159,7 @@ class RecruitingPage_Controller extends Page_Controller {
 			$sendAction
 		);
 		$form = new Form($this, 'FilterForm', $fields, $actions);
-		$form->loadDataFrom($this->request->postVars());
+		$form->loadDataFrom($this->request->requestVars());
 	    return $form;
 	}
 	
@@ -170,11 +170,17 @@ class RecruitingPage_Controller extends Page_Controller {
 		
 		$whereString = "1 ";
 		foreach($goodFilters as $var) {
-			if($this->request->postVar($var)!="") {
-				$whereString.= " AND $var = '".$this->request->postVar($var)."'";
+			if($this->request->requestVar($var)!="") {
+				$whereString.= " AND $var = '".$this->request->requestVar($var)."'";
 			}
 		}
 		return RecruitingProfile::get()->where($whereString);
+	}
+	
+	public function PaginatedProfiles() {
+		$paginatedList = new PaginatedList($this->Profiles(), $this->request);
+		$paginatedList->setPageLength(10); 
+		return $paginatedList;
 	}
 	
 	public function getCurrentProfile() {
