@@ -41,6 +41,7 @@
 				<% loop GroupedSkills %>
 					<li>
 					<h3>$Category.Title</h3>
+					<div class="skillScore" data-score="$TotalScore"></div>
 					<% loop Skills %>
 						<% if First %>
 						<div data-score="$CategoryScore"></div>
@@ -51,7 +52,6 @@
 							</ul>
 						<% end_if %>
 					<% end_loop %>
-					$TotalScore
 					</li>
 				<% end_loop %>
 				</ul>

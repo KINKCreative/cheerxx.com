@@ -25,9 +25,9 @@ class RecruitingProfile extends DataObject {
 		
 		"TotalPartnerStunt" => "Int",
 		"TotalGroupStunt" => "Int",
-		"TotalBasketToss" => "Int",
-		"TotalRunningTumbling" => "Int",
 		"TotalStandingTumbling" => "Int",
+		"TotalRunningTumbling" => "Int",
+		"TotalBasketToss" => "Int",
 
 		"IsFlyer" => "Boolean",
 		"IsBase" => "Boolean",
@@ -260,19 +260,19 @@ class RecruitingProfile extends DataObject {
 			}
 		}
 		
+		//UPDATE TOTALS
 		$skillCategories = SkillCategory::get();
 		foreach($skillCategories as $c) {
 			$className = $c->MethodClassName;
 			$skillCategoryID = $c->ID;
-			print_r($c->Skills);	
-//			$totalCount = $c->Skills()->Count();
+			$totalCount = $c->Skills()->Count();
 			
-//			if($totalCount>0) {
-//				$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
-//				$fieldName = "Total".$className;
-//				$score = ceil(10*$skillCount/$totalCount);
-//				$this->{$fieldName} = $score;
-//			}
+			if($totalCount>0) {
+				$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
+				$fieldName = "Total".$className;
+				$score = ceil(10*$skillCount/$totalCount);
+				$this->{$fieldName} = $score;
+			}
 		}
 		
 		parent::onBeforeWrite();
