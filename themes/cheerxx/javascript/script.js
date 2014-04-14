@@ -20,6 +20,14 @@ $(document).ready(function() {
 		});
 	});
 	
+	$(".RecruitingProfile_Profile").append('<script src="plugins/raty/lib/jquery.raty.js"></script>');
+	$(".RecruitingProfile_Profile .skillScore").raty({
+		score: function() {
+		    return $(this).attr('data-score');
+		},
+		readOnly: true
+	});
+	
 });
 
 })( jQuery );
