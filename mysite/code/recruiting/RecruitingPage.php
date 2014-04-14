@@ -319,6 +319,25 @@ class RecruitingPage_Controller extends Page_Controller {
 			$skillCategory->write();
 			echo("Skillcategory ".$skillCategory->Title." updated.<br/>");
 		}
+		echo("Profiles");
+		foreach(RecruitingProfile::get() as $profile) {
+			echo("Updated profile: $FirstName $LastName");
+			if($profile->Gender=="Boy") {
+				$profile->ShowBasketTossSkills = false;
+				$profile->IsFlyer = false;
+				$profile->IsBase = true;
+				$profile->ShowPartnerStuntSkills = true;
+				$profile->ShowRunningTumblingSkills = true;
+				$profile->ShowStandingTumblingSkills = true;
+			}
+			else {
+				if(!$profile->IsFlyer && !$this->IsBase) {
+					$profile->ShowPartnerStuntSkills = false;
+					$profile->ShowGroupStuntSkills = false;
+				}
+			}
+		}
+		
 		return false;
 	}
 	

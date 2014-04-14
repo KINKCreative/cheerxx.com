@@ -270,7 +270,7 @@ class RecruitingProfile extends DataObject {
 			if($totalCount>0) {
 				$skillCount = $this->Skills()->where("CategoryID = ".$skillCategoryID)->count();
 				$fieldName = "Total".$className;
-				$score = ceil(10*$skillCount/$totalCount);
+				$score = floor(10*$skillCount/$totalCount);
 				$this->{$fieldName} = $score;
 			}
 		}
