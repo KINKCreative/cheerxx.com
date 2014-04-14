@@ -13,6 +13,15 @@
 	</div>
 </section>
 
+<div class="formwrap">
+	<div class="row">
+		<div class="large-12 columns">
+			<h3>Filter Profiles</h3>
+			$Form
+		</div>
+	</div>
+</div>
+
 <div class="layout">
 	<div class="row">
 		<div class="large-12 columns">
@@ -22,7 +31,7 @@
 				
 				<div class="content">$Content</div>
 				<h2>Profiles</h2>
-				
+				<% if Profiles %>
 					<% loop Profiles %>
 						<div class="panel $Gender profilepreview">
 							<% if State %><a class="state" href="?state=$State">KY</a><% end_if %>
@@ -48,9 +57,9 @@
 							</a>
 						</div>
 					<% end_loop %>
-				</ul>
-				
-				$Form
+				<% else %>
+					<p>No profiles found. Please expand your search.</p>
+				<% end_if %>
 			</article>
 	
 		</div>

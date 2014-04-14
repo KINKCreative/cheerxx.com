@@ -29,7 +29,8 @@ class RecruitingPage_Controller extends Page_Controller {
 		'ProfileEditForm',
 		// 'RegisterForm',
 		'recruitingwebhook',
-		'update'
+		'update',
+		'FilterForm'
 	);	
 
 	public function init() {	
@@ -129,15 +130,51 @@ class RecruitingPage_Controller extends Page_Controller {
 			'Title' => "Edit your profile",
 //				'Content' => $Item->Content,
 //				'MetaTitle' => $Item->Title,
-//				'Image' => $Item->Images() ? $Item->Images()->First() : false,
 			'Form' => $this->ProfileEditForm(),
 			'ClassName' => 'RecruitingProfile_Edit',
 			"StripePublishableKey" => STRIPE_PUBLISHABLE_KEY
 		);
 	}
 	
+	public function Form() {
+		global $state_list;
+		$fields = new FieldList(
+			new LiteralField("l1",'<div class="row"><div class="medium-2 columns">'),
+			new CheckboxField("IsBase","Base"),
+			new CheckboxField("IsFlyer","Flyer"),
+			new LiteralField("l2",'</div><div class="medium-3 small-6 columns">'),
+			DropdownField::create("Gender","Gender", singleton('RecruitingProfile')->dbObject('Gender')->enumValues())->setEmptyString("(Gender)"),
+			new LiteralField("l3",'</div><div class="medium-3 small-6 columns">'),
+			DropdownField::create("TypeInterested","Squad type", singleton('RecruitingProfile')->dbObject('TypeInterested')->enumValues())->setEmptyString("(Squad type)"),
+			new LiteralField("l4",'</div><div class="medium-2 columns">'),
+			DropdownField::create("State","State", $state_list)->setEmptyString("(State)"),
+			new LiteralField("l5",'</div><div class="medium-2 columns">'),
+			TextField::create("Keyword","Search text")->setAttribute("placeholder","Keywords"),
+			new LiteralField("l6",'</div></div>')
+		);
+	
+		$sendAction = new FormAction('filterprofiles', "Submit");
+		$sendAction->addExtraClass("btn-large");
+		$actions = new FieldList(
+			$sendAction
+		);
+		$form = new Form($this, 'FilterForm', $fields, $actions);
+		$form->loadDataFrom($this->request->postVars());
+	    return $form;
+	}
+	
 	public function Profiles() {
-		return RecruitingProfile::get()->where("DATE_ADD(SubscriptionDate, INTERVAL 1 YEAR) > NOW()");
+		$goodFilters = array("IsBase", "IsFlyer","Gender","State","Keyword");
+		//$whereString = "DATE_ADD(SubscriptionDate, INTERVAL 1 YEAR) > NOW()";
+		// WHEN SUBSCRIPTIONS BECOME ACTIVE
+		
+		$whereString = "1 ";
+		foreach($goodFilters as $var) {
+			if($this->request->postVar($var)!="") {
+				$whereString.= " AND $var = '".$this->request->postVar($var)."'";
+			}
+		}
+		return RecruitingProfile::get()->where($whereString);
 	}
 	
 	public function getCurrentProfile() {

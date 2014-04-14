@@ -94,12 +94,7 @@ class RecruitingProfile extends DataObject {
 		return "recruiting";
 	}
 	
-	public function GroupedSkills() {
-	
-		
-//		$skills = new DataList();
-		
-		
+	public function GroupedSkills() {		
 		
 		$skills = new ArrayList();
 

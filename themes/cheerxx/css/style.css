@@ -543,6 +543,40 @@ table .unscored td {
 	margin-bottom: 1em !important;
 }
 
+
+/* RECRUITING PAGE */
+.formwrap {
+	background: #EEE;
+	border-bottom: 1px solid #DDD;
+	padding: 1em;
+}
+.formwrap .button {
+	margin-bottom: 0;
+}
+.formwrap .Actions {
+	text-align: right;
+}
+.formwrap input {
+	margin-bottom: 0;
+}
+.formwrap .dropdown label, .formwrap .text label {
+	display: none !important;
+}
+.formwrap .checkbox label {
+	float: none !important;
+	margin: 0;
+	font-weight: bold;
+}
+.formwrap select {
+	margin-bottom: 0 !important;
+	line-height: 1.4em ;
+}
+.formwrap .checkbox input {
+	float: none !important;
+	margin: 0 1em 0 0 !important;
+}
+
+
 @media only screen and (min-width: 768px) {
 	ul.mainmenu {
 		margin: 2em 0 1em 0;
