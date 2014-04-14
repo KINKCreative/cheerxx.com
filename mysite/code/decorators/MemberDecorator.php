@@ -3,7 +3,8 @@
 class MemberExtend extends DataExtension { 
 	private static $db = array(
 		'Username' => "Varchar(32)",
-		'StripeUserID' => "Varchar(32)"
+		'StripeUserID' => "Varchar(32)",
+		"Gender" => "Enum(',Boy,Girl','')"
 	);
 	private static $many_many = array(
 		'Likes' => 'Video'

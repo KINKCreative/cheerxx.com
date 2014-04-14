@@ -197,7 +197,10 @@ class RecruitingProfile extends DataObject {
 	
 	function onBeforeWrite() {
 		$skills = array();
-    	for($i=0;$i<6;$i++) {
+		
+		
+		// FOR THE CMS
+    	/* for($i=0;$i<6;$i++) {
     		$name = "Skills_".$i;
     		if($this->getField($name)) {
     			$value = $this->getField($name);
@@ -206,16 +209,24 @@ class RecruitingProfile extends DataObject {
 	    	}
     	}
 		$profileSkills = $this->Skills();
-		$profileSkills->setByIDList($skills);
+		$profileSkills->setByIDList($skills); */
 		
-		if($this->Gender=="Boy") {
-			$this->ShowBasketTossSkills = false;
-			$this->IsFlyer = false;
-		}
-		else {
-			if(!$this->IsFlyer && !$this->IsBase) {
-				$this->ShowPartnerStuntSkills = false;
-				$this->ShowGroupStuntSkills = false;
+		
+		// FIRST SAVE
+		if(!$this->ID) {
+			if($this->Gender=="Boy") {
+				$this->ShowBasketTossSkills = false;
+				$this->IsFlyer = false;
+				$this->IsBase = true;
+				$this->ShowPartnerStuntSkills = true;
+				$this->ShowRunningTumblingSkills = true;
+				$this->ShowStandingTumblingSkills = true;
+			}
+			else {
+				if(!$this->IsFlyer && !$this->IsBase) {
+					$this->ShowPartnerStuntSkills = false;
+					$this->ShowGroupStuntSkills = false;
+				}
 			}
 		}
 		

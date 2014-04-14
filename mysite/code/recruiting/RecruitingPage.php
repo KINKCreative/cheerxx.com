@@ -300,6 +300,7 @@ class RecruitingPage_Controller extends Page_Controller {
 			$profile->FirstName = $member->FirstName;
 			$profile->LastName = $member->Surname;
 			$profile->MemberID = $member->ID;
+			$profile->Gender = $member->Gender;
 			$profile->write();
 			$profile->SubscriptionDate = date("Y-m-d H:i:s");
 			$profile->write();
@@ -344,6 +345,9 @@ class ProfileEditForm extends Form {
 		
 		$em = TextField::create("Email","E-mail", $member->Email);
 		$em->setAttribute("disabled",true);
+		
+		$ge = TextField::create("Gender","Gender", $member->Gender);
+		$ge->setAttribute("disabled",true);
 	
     	$sizeMB = 5; // 50 MB
 		$size = $sizeMB * 1024 * 1024; // 2 MB in bytes
@@ -396,12 +400,13 @@ class ProfileEditForm extends Form {
 				new LiteralField("l3",'</div></div><div class="row"><div class="large-8 columns">'),
 				$em,
 				new LiteralField("l4",'</div><div class="large-4 columns">'),
-				DropdownField::create(
-				  'Gender',
-				  'Gender',
-				  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
-				  $profile->Gender
-				)->setEmptyString('(Select)'),
+//				DropdownField::create(
+//				  'Gender',
+//				  'Gender',
+//				  singleton('RecruitingProfile')->dbObject('Gender')->enumValues(),
+//				  $profile->Gender
+//				)->setEmptyString('(Select)'),
+				$ge,
 				new LiteralField("l5",'</div></div><div class="row"><div class="large-8 columns">'),
 				new TextField("Hometown","Hometown",$profile->skHometown),
 				new LiteralField("l6",'</div><div class="large-4 columns">'),
@@ -526,6 +531,7 @@ class ProfileEditForm extends Form {
 					"School",
 					"ProfileText",
 					"CollegesInterested",
+					"TypeInterested",
 					"ShowPartnerStuntSkills",
 					"ShowGroupStuntSkills",
 					"ShowRunningTumblingSkills",
@@ -540,6 +546,9 @@ class ProfileEditForm extends Form {
 				foreach($myFields as $fieldName) {
 					if(array_key_exists($fieldName,$data)) {
 						$profile->{$fieldName} = $data[$fieldName];
+					}
+					else {
+						$profile->{$fieldName} = false;
 					}
 				}
 					
@@ -560,7 +569,6 @@ class ProfileEditForm extends Form {
 //	   			$profile->OtherRunningTumblingSkills = $data["OtherRunningTumblingSkills"];
 //	   			$profile->OtherStandingTumblingSkills = $data["OtherStandingTumblingSkills"];
 //	   			$profile->OtherBaketTossSkills = $data["OtherBaketTossSkills"];
-//	   				   			
 //	   			
 //	   			if(array_key_exists("IsFlyer",$data)) {
 //		   			$profile->IsFlyer = $data["IsFlyer"];
@@ -574,9 +582,9 @@ class ProfileEditForm extends Form {
 //		   		if(array_key_exists("TypeInterested",$data)) {
 //		   			$profile->TypeInterested = $data["TypeInterested"];
 //		   		}
-//		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
-//			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
-//			   	}
+		   		if(array_key_exists("Files",$data["Images"]) && sizeof($data["Images"]["Files"] > 0)) {
+			   		$profile->Images()->setByIDList($data["Images"]["Files"]);
+			   	}
 			   	$profile->write();
 			   	$profile->Skills()->setByIDList($skills);
 			   	$profile->Skills()->write();
