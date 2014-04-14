@@ -446,7 +446,6 @@ form .readonly {
 	background: #df00ad;
 	color: #FFFFFF;
 }
-
 .Girl a:hover {
 	background: #8c006d;
 }
@@ -488,6 +487,16 @@ ul.skills {
 .profilebackground h2 {
 	color: #FFF;
 	text-transform: uppercase;
+}
+
+.RecruitingProfile_Profile h3 {
+	margin-bottom: 0em;
+}
+.RecruitingProfile_Profile .skillScore {
+	margin-bottom: 1em;
+}
+.RecruitingProfile_Profile .skills li i {
+	color: #DDD;
 }
 
 /* SCORING FORM */
